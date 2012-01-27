@@ -9,6 +9,15 @@ namespace Barrier_Synchronization
     {
         static void Main(string[] args)
         {
+            const int n_worker = 5;
+
+            Barrier barrier = new Barrier(n_worker);
+
+            Worker[] w = new Worker[n_worker];
+            for (int i = 0; i < n_worker; i++)
+                w[i] = new Worker(i + 1,barrier);
+
+            w[0].Join();
         }
     }
 }

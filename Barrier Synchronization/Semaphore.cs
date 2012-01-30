@@ -15,20 +15,28 @@ namespace Barrier_Synchronization
     {
         public Semaphore(int initial_count, int max_count)
         {
-            s = new System.Threading.Semaphore(initial_count, max_count);
+            count = initial_count;           
         }
 
         public void P()
         {
-            s.WaitOne();
+            Monitor.Enter(this);
+            count--;
+            if (count < 0)
+                Monitor.Wait(this);
+            Monitor.Exit(this);
         }
 
         public void V()
         {
-            s.Release();
+            Monitor.Enter(this);
+            count++;
+            if (count <= 0)
+                Monitor.Pulse(this);
+            Monitor.Exit(this);
         }
 
-        private System.Threading.Semaphore s;
+        private int count;
     }
 
 }

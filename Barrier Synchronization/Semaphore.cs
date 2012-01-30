@@ -13,32 +13,22 @@ namespace Barrier_Synchronization
     /// </summary>
     public class Semaphore
     {
-        public Semaphore(int initial_count)
+        public Semaphore(int initial_count, int max_count)
         {
-            count = initial_count;
-            m = new Mutex();
-            are = new AutoResetEvent(false);
+            s = new System.Threading.Semaphore(initial_count, max_count);
         }
 
         public void P()
         {
-            m.WaitOne();
-            int w = --count;
-            m.ReleaseMutex();
-            if (w < 0) are.WaitOne();
+            s.WaitOne();
         }
 
         public void V()
         {
-            m.WaitOne();
-            int w = ++count;
-            m.ReleaseMutex();
-            if (w <= 0) are.Set();
+            s.Release();
         }
 
-        private int count;
-        private Mutex m;
-        private AutoResetEvent are;
+        private System.Threading.Semaphore s;
     }
 
 }

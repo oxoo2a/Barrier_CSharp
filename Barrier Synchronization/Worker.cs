@@ -51,6 +51,6 @@ namespace Barrier_Synchronization
         private Random r;
         private const int max_sleep_time = 10000;
         private IBarrier barrier;
-        private static Semaphore mutex = new Semaphore(1);
+        private static Semaphore mutex = new Semaphore(1,1);
     }
 }

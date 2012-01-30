@@ -32,6 +32,7 @@ namespace Barrier_Synchronization
         public MyBarrier(int n_threads)
         {
             this.n_threads = n_threads;
+            queue = new Semaphore(0, n_threads);
         }
 
         public void BarrierReached()
@@ -52,8 +53,8 @@ namespace Barrier_Synchronization
             }
         }
 
-        private Semaphore mutex = new Semaphore(1);
-        private Semaphore queue = new Semaphore(0);
+        private Semaphore mutex = new Semaphore(1,1);
+        private Semaphore queue;
         private int n_reached = 0;
         private int n_threads;
     }

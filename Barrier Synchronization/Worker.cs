@@ -8,7 +8,7 @@ namespace Barrier_Synchronization
 {
     class Worker
     {
-        public Worker(int id, Barrier barrier)
+        public Worker(int id, IBarrier barrier)
         {
             this.id = id;
             this.barrier = barrier;
@@ -37,7 +37,7 @@ namespace Barrier_Synchronization
                 Console.WriteLine("\\-/");
                 mutex.V();
 
-                barrier.Reached();
+                barrier.BarrierReached();
             }
         }
 
@@ -50,7 +50,7 @@ namespace Barrier_Synchronization
         private Thread t;
         private Random r;
         private const int max_sleep_time = 10000;
-        private Barrier barrier;
+        private IBarrier barrier;
         private static Semaphore mutex = new Semaphore(1);
     }
 }

@@ -5,14 +5,19 @@ using System.Text;
 
 namespace Barrier_Synchronization
 {
-    class Barrier
+    interface IBarrier
+    {
+        void BarrierReached();
+    }
+
+    class Barrier : IBarrier
     {
         public Barrier(int n_threads)
         {
             b = new System.Threading.Barrier(n_threads);
         }
 
-        public void Reached()
+        public void BarrierReached()
         {
             if (b.ParticipantsRemaining == 1)
                 Console.WriteLine("------------------------------------------------------------");
@@ -20,5 +25,36 @@ namespace Barrier_Synchronization
         }
 
         private System.Threading.Barrier b;
+    }
+
+    class MyBarrier : IBarrier
+    {
+        public MyBarrier(int n_threads)
+        {
+            this.n_threads = n_threads;
+        }
+
+        public void BarrierReached()
+        {
+            mutex.P();
+            n_reached++;
+            if (n_reached < n_threads)
+            {
+                mutex.V();
+                queue.P();
+            }
+            else
+            {
+                Console.WriteLine("------------------------------------------------------------");
+                while (--n_reached > 0)
+                    queue.V();
+                mutex.V();
+            }
+        }
+
+        private Semaphore mutex = new Semaphore(1);
+        private Semaphore queue = new Semaphore(0);
+        private int n_reached = 0;
+        private int n_threads;
     }
 }

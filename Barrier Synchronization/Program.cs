@@ -11,7 +11,7 @@ namespace Barrier_Synchronization
         {
             const int n_worker = 5;
 
-            Barrier barrier = new Barrier(n_worker);
+            IBarrier barrier = new MyBarrier(n_worker);
 
             Worker[] w = new Worker[n_worker];
             for (int i = 0; i < n_worker; i++)

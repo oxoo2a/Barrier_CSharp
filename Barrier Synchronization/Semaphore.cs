@@ -15,30 +15,28 @@ namespace Barrier_Synchronization
     {
         public Semaphore(int initial_count)
         {
-            count = initial_count;
-            m = new Mutex();
-            are = new AutoResetEvent(false);
+            count = initial_count;           
         }
 
         public void P()
         {
-            m.WaitOne();
-            int w = --count;
-            m.ReleaseMutex();
-            if (w < 0) are.WaitOne();
+            Monitor.Enter(this);
+            count--;
+            if (count < 0)
+                Monitor.Wait(this);
+            Monitor.Exit(this);
         }
 
         public void V()
         {
-            m.WaitOne();
-            int w = ++count;
-            m.ReleaseMutex();
-            if (w <= 0) are.Set();
+            Monitor.Enter(this);
+            count++;
+            if (count <= 0)
+                Monitor.Pulse(this);
+            Monitor.Exit(this);
         }
 
         private int count;
-        private Mutex m;
-        private AutoResetEvent are;
     }
 
 }

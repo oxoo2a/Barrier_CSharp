@@ -29,7 +29,7 @@ namespace Barrier_Synchronization
                 Console.WriteLine("/-\\");
                 mutex.V();
 
-                Thread.Sleep(1000 + r.Next(max_sleep_time));
+                // Thread.Sleep(1000 + r.Next(max_sleep_time));
 
                 mutex.P();
                 Console.Write("Worker {0}:{1}", id, loop);
